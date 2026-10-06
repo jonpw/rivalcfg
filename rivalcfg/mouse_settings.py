@@ -134,6 +134,8 @@ class MouseSettings(object):
             and self._mouse_profile["settings"][setting_name]["value_type"] == "none"
         ):
             return  # Skip settings without values
+        if self._mouse_profile["settings"][setting_name].get("is_action"):
+            return  # Skip actions, they have no state to remember
         self._settings[self._current_profile_name][setting_name] = value
 
     def get(self, setting_name):
@@ -153,6 +155,8 @@ class MouseSettings(object):
             "value_type" in self._mouse_profile["settings"][setting_name]
             and self._mouse_profile["settings"][setting_name]["value_type"] == "none"
         ):
+            return None
+        if self._mouse_profile["settings"][setting_name].get("is_action"):
             return None
         return self._settings[self._current_profile_name][setting_name]
 

@@ -207,6 +207,9 @@ class Mouse:
     def reset_settings(self):
         """Sets all settings to their factory default values."""
         for name, setting_info in self.mouse_profile["settings"].items():
+            # Actions (e.g. play a vibration) have no state to reset
+            if setting_info.get("is_action"):
+                continue
             method_name = "set_%s" % name
             method = getattr(self, method_name)
             if (

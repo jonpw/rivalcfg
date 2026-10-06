@@ -121,6 +121,7 @@ def main(args=sys.argv[1:]):
 
     # Apply settings
     if mouse:
+        settings_changed = settings.RESET
         for setting_name, value in [(k.lower(), v) for k, v in vars(settings).items()]:
             if value is None:
                 continue
@@ -128,9 +129,12 @@ def main(args=sys.argv[1:]):
             if not hasattr(mouse, method_name):
                 continue
             getattr(mouse, method_name)(value)
+            if not mouse.mouse_profile["settings"][setting_name].get("is_action"):
+                settings_changed = True
 
-        # Save settings in the internal device memory
-        if settings.SAVE:
+        # Save settings in the internal device memory (actions, like playing a
+        # vibration, do not change anything that needs to be saved)
+        if settings.SAVE and settings_changed:
             mouse.save()
 
 

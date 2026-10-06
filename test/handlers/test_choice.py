@@ -94,3 +94,19 @@ class TestAddCliOption(object):
             cli.parse_args(["--light-effect", choice])
         assert pytest_wrapped_e.type == SystemExit
         assert pytest_wrapped_e.value.code == 2
+
+    def test_cli_help_without_default(self):
+        cli = argparse.ArgumentParser()
+        choice.add_cli_option(
+            cli,
+            "action0",
+            {
+                "label": "Action",
+                "description": "Do something",
+                "cli": ["-a", "--action"],
+                "command": [0x59],
+                "value_type": "choice",
+                "choices": {"foo": 0x01},
+            },
+        )
+        assert "default:" not in cli.format_help()

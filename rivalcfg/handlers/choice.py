@@ -119,11 +119,17 @@ def add_cli_option(cli_parser, setting_name, setting_info):
     :param dict setting_info: The information dict of the setting from the
                               device profile.
     """
-    description = "%s (values: %s, default: %s)" % (
-        setting_info["description"],
-        choices_to_string(setting_info["choices"]),
-        str(setting_info["default"]),
-    )
+    if "default" in setting_info:
+        description = "%s (values: %s, default: %s)" % (
+            setting_info["description"],
+            choices_to_string(setting_info["choices"]),
+            str(setting_info["default"]),
+        )
+    else:
+        description = "%s (values: %s)" % (
+            setting_info["description"],
+            choices_to_string(setting_info["choices"]),
+        )
     cli_parser.add_argument(
         *setting_info["cli"],
         help=description,

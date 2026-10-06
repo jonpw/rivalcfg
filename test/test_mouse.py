@@ -87,6 +87,18 @@ FAKE_PROFILE = {
             "value_type": "none",
             "readback_length": 0,
         },
+        "setting_action": {
+            "label": "Action",
+            "description": "An action that should not be reset",
+            "cli": ["-9", "--setting9"],
+            "report_type": usbhid.HID_REPORT_TYPE_OUTPUT,
+            "command": [0x59],
+            "value_type": "choice",
+            "choices": {
+                "foo": 0x42,
+            },
+            "is_action": True,
+        },
     },
     "save_command": {
         "report_type": usbhid.HID_REPORT_TYPE_OUTPUT,
@@ -179,6 +191,13 @@ class TestMouse(object):
         assert b"\x02\x00\xaa\xbb" in hid_report  # setting1
         assert b"\x02\x00\xcc\x02" in hid_report  # setting2
         assert b"\x03\x00\xc0\x10\x25" in hid_report  # setting3
+        assert b"\x02\x00\x59" not in hid_report  # setting_action (action)
+
+    def test_action(self, mouse):
+        mouse.set_setting_action("foo")
+        mouse._hid_device.bytes.seek(0)
+        assert mouse._hid_device.bytes.read() == b"\x02\x00\x59\x42"
+        assert mouse.mouse_settings.get("setting_action") is None
 
     def test_repr(self, mouse):
         assert str(mouse) == "<Mouse Fake Mouse (1038:baad:02)>"

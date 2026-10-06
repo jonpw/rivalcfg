@@ -1,0 +1,52 @@
+:1038:170E SteelSeries Rival 500
+
+# NOTE: Other Rival 500 settings are still tested in
+# test/devices/old_specs/test_rival500.py
+
+# ==== Tactile alerts ====
+# Tactile alerts are actions: they must not be followed by a save command.
+
+--tactile-alert strong-click
+< 02 00 | 59 01 00 01
+
+--tactile-alert sharp-click
+< 02 00 | 59 01 00 04
+
+--tactile-alert soft-bump
+< 02 00 | 59 01 00 07
+
+--tactile-alert double-click
+< 02 00 | 59 01 00 0A
+
+--tactile-alert short-double-click
+< 02 00 | 59 01 00 1B
+
+--tactile-alert triple-click
+< 02 00 | 59 01 00 0C
+
+--tactile-alert buzz
+< 02 00 | 59 01 00 2F
+
+--tactile-alert long-buzz
+< 02 00 | 59 01 00 0F
+
+--tactile-alert sharp-tick
+< 02 00 | 59 01 00 18
+
+-t pulsing
+< 02 00 | 59 01 00 35
+
+--tactile-alert slow-heartbeat
+< 02 00 | 59 04 01 00 01 00 02 00 14 00 01 00 01 00 02 00
+
+--tactile-alert fast-heartbeat
+< 02 00 | 59 04 01 00 01 00 02 00 0A 00 01 00 01 00 02 00
+
+--tactile-alert sad-trombone
+< 02 00 | 59 04 01 00 19 00 02 00 12 00 01 00 3C 00 02 00
+
+# A tactile alert combined with a real setting: the setting is still saved
+--polling-rate 500 --tactile-alert buzz
+< 02 00 | 04 00 02
+< 02 00 | 59 01 00 2F
+< 02 00 | 09 00

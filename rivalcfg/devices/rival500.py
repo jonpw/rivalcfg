@@ -120,6 +120,38 @@ profile = {
             "button_field_length": 5,
             "default": "default",
         },
+        "tactile_alert": {
+            "label": "Tactile alert",
+            "description": "Play a tactile alert (vibration) once",
+            "cli": ["-t", "--tactile-alert"],
+            "report_type": usbhid.HID_REPORT_TYPE_OUTPUT,
+            "command": [0x59],
+            "value_type": "choice",
+            # fmt: off
+            "choices": {
+                # Built-in effects: 59 01 00 <effect id>
+                "strong-click":       [0x01, 0x00, 0x01],
+                "sharp-click":        [0x01, 0x00, 0x04],
+                "soft-bump":          [0x01, 0x00, 0x07],
+                "double-click":       [0x01, 0x00, 0x0A],
+                "short-double-click": [0x01, 0x00, 0x1B],
+                "triple-click":       [0x01, 0x00, 0x0C],
+                "buzz":               [0x01, 0x00, 0x2F],
+                "long-buzz":          [0x01, 0x00, 0x0F],
+                "sharp-tick":         [0x01, 0x00, 0x18],
+                "pulsing":            [0x01, 0x00, 0x35],
+                # Patterns: 59 04 01 00 <pattern data> (raw SSE3 captures,
+                # format not decoded yet)
+                "slow-heartbeat": [0x04, 0x01, 0x00, 0x01, 0x00, 0x02, 0x00, 0x14,
+                                   0x00, 0x01, 0x00, 0x01, 0x00, 0x02, 0x00],
+                "fast-heartbeat": [0x04, 0x01, 0x00, 0x01, 0x00, 0x02, 0x00, 0x0A,
+                                   0x00, 0x01, 0x00, 0x01, 0x00, 0x02, 0x00],
+                "sad-trombone":   [0x04, 0x01, 0x00, 0x19, 0x00, 0x02, 0x00, 0x12,
+                                   0x00, 0x01, 0x00, 0x3C, 0x00, 0x02, 0x00],
+            },
+            # fmt: on
+            "is_action": True,
+        },
     },
     "save_command": {
         "report_type": usbhid.HID_REPORT_TYPE_OUTPUT,

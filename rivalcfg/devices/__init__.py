@@ -73,6 +73,11 @@ Here is what a profile file looks like::
                 },
                 # The factory default value of this setting.
                 "default": 1000,
+                # If True, this is an action (e.g. play a vibration) rather
+                # than a setting: it is not reset, not remembered, and does
+                # not trigger a save on its own (optional, default: False).
+                # Actions do not need a "default" value.
+                "is_action": False,
             },
 
             "color": {

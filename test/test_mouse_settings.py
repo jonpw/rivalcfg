@@ -15,6 +15,10 @@ FAKE_PROFILE = {
         "setting3": {
             "value_type": "none",
         },
+        "setting4": {
+            "value_type": "choice",
+            "is_action": True,
+        },
     },
 }
 
@@ -97,3 +101,20 @@ class Test_MouseSettings(object):
         with open(mouse_settings.get_settings_path(0x1038, 0xBAAD), "r") as file_:
             saved_data = json.load(file_)
         assert "setting3" not in saved_data["default"]
+
+    def test_action_settings_return_none(self, monkeypatch, tmpdir):
+        monkeypatch.delenv("DEBUG_DRY", raising=False)
+        monkeypatch.setenv("XDG_CONFIG_HOME", str(tmpdir))
+        ms = mouse_settings.MouseSettings(0x1038, 0xBAAD, FAKE_PROFILE)
+        ms.set("setting4", "foo")
+        assert ms.get("setting4") is None
+
+    def test_action_settings_not_saved(self, monkeypatch, tmpdir):
+        monkeypatch.delenv("DEBUG_DRY", raising=False)
+        monkeypatch.setenv("XDG_CONFIG_HOME", str(tmpdir))
+        ms = mouse_settings.MouseSettings(0x1038, 0xBAAD, FAKE_PROFILE)
+        ms.set("setting4", "foo")
+        ms.save()
+        with open(mouse_settings.get_settings_path(0x1038, 0xBAAD), "r") as file_:
+            saved_data = json.load(file_)
+        assert "setting4" not in saved_data["default"]
